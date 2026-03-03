@@ -1,0 +1,138 @@
+{% extends "base.html" %} {% block title %}Home - Certificate Fraud Detection{%
+endblock %} {% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container text-center">
+    <h1 class="display-4 mb-3">
+      <i class="fas fa-shield-alt me-3"></i>
+      AI-Based Certificate Fraud Detection
+    </h1>
+    <p class="lead mb-4">
+      Detect fraudulent certificates using advanced AI and machine learning
+    </p>
+    {% if not current_user.is_authenticated %}
+    <div class="mt-4">
+      <a href="{{ url_for('register') }}" class="btn btn-light btn-lg me-2">
+        <i class="fas fa-user-plus me-2"></i> Get Started
+      </a>
+      <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">
+        <i class="fas fa-sign-in-alt me-2"></i> Login
+      </a>
+    </div>
+    {% else %}
+    <div class="mt-4">
+      <a href="{{ url_for('dashboard') }}" class="btn btn-light btn-lg">
+        <i class="fas fa-tachometer-alt me-2"></i> Go to Dashboard
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+  <div class="container">
+    <h2 class="text-center mb-5">How It Works</h2>
+    <div class="row">
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100 text-center">
+          <div class="card-body">
+            <i class="fas fa-robot analysis-icon" style="color: #3498db"></i>
+            <h5>Text Analysis</h5>
+            <p class="text-muted">
+              Uses DistilBERT NLP model to analyze certificate text for fraud
+              patterns
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100 text-center">
+          <div class="card-body">
+            <i
+              class="fas fa-signature analysis-icon"
+              style="color: #9b59b6"
+            ></i>
+            <h5>Signature Check</h5>
+            <p class="text-muted">
+              SSIM-based signature detection and verification
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100 text-center">
+          <div class="card-body">
+            <i class="fas fa-image analysis-icon" style="color: #e67e22"></i>
+            <h5>Logo Detection</h5>
+            <p class="text-muted">
+              OpenCV template matching for official logo verification
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100 text-center">
+          <div class="card-body">
+            <i
+              class="fas fa-certificate analysis-icon"
+              style="color: #1abc9c"
+            ></i>
+            <h5>Stamp Verification</h5>
+            <p class="text-muted">
+              Hough Circle Transform for digital stamp detection
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Technology Section -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center mb-5">Technology Stack</h2>
+    <div class="row text-center">
+      <div class="col-6 col-md-3 mb-3">
+        <div class="p-3">
+          <i class="fab fa-python fa-3x mb-2" style="color: #3776ab"></i>
+          <h6>Python</h6>
+        </div>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <div class="p-3">
+          <i class="fas fa-flask fa-3x mb-2" style="color: #000000"></i>
+          <h6>Flask</h6>
+        </div>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <div class="p-3">
+          <i class="fas fa-brain fa-3x mb-2" style="color: #ff6f00"></i>
+          <h6>DistilBERT</h6>
+        </div>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <div class="p-3">
+          <i class="fas fa-eye fa-3x mb-2" style="color: #5c9aff"></i>
+          <h6>OpenCV</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+{% if not current_user.is_authenticated %}
+<section class="py-5">
+  <div class="container text-center">
+    <h2 class="mb-3">Ready to Get Started?</h2>
+    <p class="text-muted mb-4">
+      Create an account and start detecting certificate fraud today
+    </p>
+    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">
+      <i class="fas fa-user-plus me-2"></i> Register Now
+    </a>
+  </div>
+</section>
+{% endif %} {% endblock %}

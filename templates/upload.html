@@ -1,0 +1,102 @@
+{% extends "base.html" %} {% block title %}Upload Certificate - Certificate
+Fraud Detection{% endblock %} {% block content %}
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-body p-5">
+          <div class="text-center mb-4">
+            <i
+              class="fas fa-upload analysis-icon"
+              style="font-size: 4rem; color: var(--secondary-color)"
+            ></i>
+            <h2 class="mt-3">Upload Certificate</h2>
+            <p class="text-muted">
+              Upload a certificate for fraud detection analysis
+            </p>
+          </div>
+
+          <form
+            method="POST"
+            enctype="multipart/form-data"
+            action="{{ url_for('upload') }}"
+          >
+            {{ form.hidden_tag() }}
+
+            <div class="mb-4">
+              <label for="certificate" class="form-label"
+                >Select Certificate File</label
+              >
+              <div class="input-group">
+                <span class="input-group-text"
+                  ><i class="fas fa-file"></i
+                ></span>
+                {{ form.certificate(class="form-control",
+                accept=".pdf,.jpg,.jpeg,.png") }}
+              </div>
+              {% if form.certificate.errors %}
+              <div class="text-danger small mt-1">
+                {% for error in form.certificate.errors %}{{ error }}{% endfor
+                %}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="mb-4">
+              <div class="alert alert-info">
+                <h5>
+                  <i class="fas fa-info-circle me-2"></i>Supported Formats
+                </h5>
+                <p class="mb-0">PDF, JPG, JPEG, PNG (Max 5MB)</p>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <h5><i class="fas fa-microscope me-2"></i>Analysis Includes:</h5>
+              <div class="row mt-3">
+                <div class="col-md-6">
+                  <ul class="list-unstyled">
+                    <li class="mb-2">
+                      <i class="fas fa-check text-success me-2"></i>Text
+                      Analysis (DistilBERT)
+                    </li>
+                    <li class="mb-2">
+                      <i class="fas fa-check text-success me-2"></i>Signature
+                      Detection (SSIM)
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-6">
+                  <ul class="list-unstyled">
+                    <li class="mb-2">
+                      <i class="fas fa-check text-success me-2"></i>Logo
+                      Detection (OpenCV)
+                    </li>
+                    <li class="mb-2">
+                      <i class="fas fa-check text-success me-2"></i>Stamp
+                      Verification
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-grid">
+              {{ form.submit(class="btn btn-primary btn-lg") }}
+            </div>
+          </form>
+
+          <div class="text-center mt-4">
+            <a
+              href="{{ url_for('dashboard') }}"
+              class="btn btn-outline-secondary"
+            >
+              <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

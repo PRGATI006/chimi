@@ -1,0 +1,201 @@
+{% extends "base.html" %} {% block title %}Analysis Result - Certificate Fraud
+Detection{% endblock %} {% block content %}
+<div class="container mt-4">
+  <!-- Back Button -->
+  <div class="row mb-3">
+    <div class="col-12">
+      <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+      </a>
+    </div>
+  </div>
+
+  <!-- Overall Score -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div
+        class="card {% if certificate.is_suspicious %}border-danger{% else %}border-success{% endif %}"
+      >
+        <div class="card-body text-center py-5">
+          <h2 class="mb-3">Overall Fraud Detection Result</h2>
+
+          <div
+            class="fraud-score {% if certificate.overall_fraud_score > 50 %}score-high{% elif certificate.overall_fraud_score > 25 %}score-medium{% else %}score-low{% endif %}"
+          >
+            {{ "%.1f"|format(certificate.overall_fraud_score) }}%
+          </div>
+
+          {% if certificate.is_suspicious %}
+          <div class="alert alert-danger mt-3">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <strong>This certificate is SUSPICIOUS!</strong>
+            <p class="mb-0">
+              The analysis indicates potential fraud indicators.
+            </p>
+          </div>
+          {% else %}
+          <div class="alert alert-success mt-3">
+            <i class="fas fa-check-circle me-2"></i>
+            <strong>This certificate appears GENUINE</strong>
+            <p class="mb-0">No significant fraud indicators were detected.</p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Individual Scores -->
+  <div class="row mb-4">
+    <!-- Text Analysis -->
+    <div class="col-md-6 col-lg-3 mb-3">
+      <div class="card h-100">
+        <div class="card-body text-center">
+          <i class="fas fa-robot analysis-icon" style="color: #3498db"></i>
+          <h5>Text Analysis</h5>
+          <div
+            class="fraud-score {% if certificate.text_fraud_score > 50 %}score-high{% elif certificate.text_fraud_score > 25 %}score-medium{% else %}score-low{% endif %}"
+          >
+            {{ "%.1f"|format(certificate.text_fraud_score) }}%
+          </div>
+          <p class="text-muted small">DistilBERT NLP</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signature Check -->
+    <div class="col-md-6 col-lg-3 mb-3">
+      <div class="card h-100">
+        <div class="card-body text-center">
+          <i class="fas fa-signature analysis-icon" style="color: #9b59b6"></i>
+          <h5>Signature Check</h5>
+          <div
+            class="fraud-score {% if certificate.signature_fraud_score > 50 %}score-high{% elif certificate.signature_fraud_score > 25 %}score-medium{% else %}score-low{% endif %}"
+          >
+            {{ "%.1f"|format(certificate.signature_fraud_score) }}%
+          </div>
+          <p class="text-muted small">
+            {% if certificate.signature_detected %}
+            <span class="text-success"
+              ><i class="fas fa-check"></i> Detected</span
+            >
+            {% else %}
+            <span class="text-danger"
+              ><i class="fas fa-times"></i> Not Found</span
+            >
+            {% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logo Detection -->
+    <div class="col-md-6 col-lg-3 mb-3">
+      <div class="card h-100">
+        <div class="card-body text-center">
+          <i class="fas fa-image analysis-icon" style="color: #e67e22"></i>
+          <h5>Logo Detection</h5>
+          <div
+            class="fraud-score {% if certificate.logo_fraud_score > 50 %}score-high{% elif certificate.logo_fraud_score > 25 %}score-medium{% else %}score-low{% endif %}"
+          >
+            {{ "%.1f"|format(certificate.logo_fraud_score) }}%
+          </div>
+          <p class="text-muted small">
+            {% if certificate.logo_detected %}
+            <span class="text-success"
+              ><i class="fas fa-check"></i> Detected</span
+            >
+            {% else %}
+            <span class="text-danger"
+              ><i class="fas fa-times"></i> Not Found</span
+            >
+            {% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stamp Verification -->
+    <div class="col-md-6 col-lg-3 mb-3">
+      <div class="card h-100">
+        <div class="card-body text-center">
+          <i
+            class="fas fa-certificate analysis-icon"
+            style="color: #1abc9c"
+          ></i>
+          <h5>Stamp Verification</h5>
+          <div
+            class="fraud-score {% if certificate.stamp_fraud_score > 50 %}score-high{% elif certificate.stamp_fraud_score > 25 %}score-medium{% else %}score-low{% endif %}"
+          >
+            {{ "%.1f"|format(certificate.stamp_fraud_score) }}%
+          </div>
+          <p class="text-muted small">
+            {% if certificate.stamp_detected %}
+            <span class="text-success"
+              ><i class="fas fa-check"></i> Detected</span
+            >
+            {% else %}
+            <span class="text-danger"
+              ><i class="fas fa-times"></i> Not Found</span
+            >
+            {% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Certificate Info -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">
+            <i class="fas fa-info-circle me-2"></i>Certificate Information
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Certificate ID:</strong> {{ certificate.id }}</p>
+              <p><strong>Filename:</strong> {{ certificate.filename }}</p>
+              <p>
+                <strong>Upload Date:</strong> {{
+                certificate.created_at.strftime('%Y-%m-%d %H:%M:%S') }}
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Extracted Text:</strong></p>
+              <div
+                class="bg-light p-3 rounded"
+                style="max-height: 150px; overflow-y: auto"
+              >
+                {{ certificate.extracted_text[:500] if
+                certificate.extracted_text else 'No text extracted' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Download Buttons -->
+  <div class="row">
+    <div class="col-12 text-center">
+      <a
+        href="{{ url_for('download_json', certificate_id=certificate.id) }}"
+        class="btn btn-outline-primary"
+      >
+        <i class="fas fa-file-download me-2"></i> Download JSON Report
+      </a>
+      <a
+        href="{{ url_for('download_pdf', certificate_id=certificate.id) }}"
+        class="btn btn-outline-danger"
+      >
+        <i class="fas fa-file-pdf me-2"></i> Download PDF Report
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
