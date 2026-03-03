@@ -19,7 +19,7 @@ Here's a professional LinkedIn post to share your project. You can copy and cust
 
 This project taught me a lot about integrating NLP and computer vision into real-world applications. Looking forward to improving it further!
 
-🔗 GitHub: https://github.com/YOUR_USERNAME/certificate-fraud-detection
+🔗 GitHub: https://github.com/PRGATI006/chimi
 
 #AI #MachineLearning #ComputerVision #Python #Flask #CertificateVerification #Innovation #Tech #OpenSource #100DaysOfCode #Coding #Developer
 ```
@@ -62,7 +62,7 @@ Python | Flask | PyTorch | Transformers | OpenCV | SQLite
 
 This project challenged me to combine theory with practical implementation. Special thanks to the open-source community for providing such powerful tools!
 
-🔗 Check out the code: https://github.com/YOUR_USERNAME/certificate-fraud-detection
+🔗 Check out the code: https://github.com/PRGATI006/chimi
 
 Would love to hear your feedback and suggestions for improvement!
 
@@ -90,7 +90,7 @@ All running on a regular laptop - no GPU needed!
 
 Being a CS student, this project was a great learning experience combining NLP, computer vision, and web development.
 
-Check it out: https://github.com/YOUR_USERNAME/certificate-fraud-detection
+Check it out: https://github.com/PRGATI006/chimi
 
 Would mean a lot if you could ⭐ the repo!
 
@@ -137,7 +137,7 @@ Would mean a lot if you could ⭐ the repo!
 
 ## 🔗 Useful Links to Add:
 
-- GitHub Repository: `https://github.com/YOUR_USERNAME/certificate-fraud-detection`
+- GitHub Repository: `https://github.com/PRGATI006/chimi`
 - Live Demo (if deployed): `your-demo-link.com`
 - LinkedIn Profile: `linkedin.com/in/YOUR_PROFILE`
 

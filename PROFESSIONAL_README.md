@@ -178,7 +178,7 @@ certificate-fraud-detection/
 
 ```
 bash
-git clone https://github.com/YOUR_USERNAME/certificate-fraud-detection.git
+git clone https://github.com/PRGATI006/chimi.git
 cd certificate-fraud-detection
 ```
 
@@ -372,7 +372,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
     <a href="https://linkedin.com/in/YOUR_LINKEDIN">
       <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin" alt="LinkedIn">
     </a>
-    <a href="https://github.com/YOUR_GITHUB">
+    <a href="https://github.com/PRGATI006">
       <img src="https://img.shields.io/badge/GitHub-333333?style=flat&logo=github" alt="GitHub">
     </a>
     <a href="mailto:your.email@example.com">
