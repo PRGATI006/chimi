@@ -369,7 +369,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
   🎓 Computer Science Student | 🤖 AI/ML Enthusiast | 🌐 Web Developer
   
   <p>
-    <a href="https://linkedin.com/in/YOUR_LINKEDIN">
+    <a href="https://www.linkedin.com/in/pragati-gaikwad-13aa9a256">
       <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin" alt="LinkedIn">
     </a>
     <a href="https://github.com/PRGATI006">
