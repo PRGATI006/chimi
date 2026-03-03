@@ -364,7 +364,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 <div align="center">
   <img src="https://via.placeholder.com/150x150?text=Your+Photo" alt="Profile" style="border-radius: 50%;">
   
-  **Your Name**
+  **Pragati Gaikwad**
   
   🎓 Computer Science Student | 🤖 AI/ML Enthusiast | 🌐 Web Developer
   
