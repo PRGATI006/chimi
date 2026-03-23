@@ -1,0 +1,206 @@
+{% extends 'base.html' %} {% block title %}Certificate History - Certificate
+Fraud Detection{% endblock %} {% block content %}
+<div class="container py-4">
+  <!-- Header -->
+  <div class="row mb-4">
+    <div class="col">
+      <h2>
+        <i class="bi bi-clock-history me-2"></i>Certificate Analysis History
+      </h2>
+      <p class="text-muted">
+        View all your uploaded certificates and their analysis results
+      </p>
+    </div>
+    <div class="col-auto">
+      <a href="{% url 'upload' %}" class="btn btn-primary">
+        <i class="bi bi-upload me-2"></i>Upload New Certificate
+      </a>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <form method="get" class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Filter by Result</label>
+          <select name="result" class="form-select">
+            <option value="">All Results</option>
+            <option
+              value="genuine"
+              {%
+              if
+              filter_result=""
+              ="genuine"
+              %}selected{%
+              endif
+              %}
+            >
+              Genuine
+            </option>
+            <option
+              value="suspicious"
+              {%
+              if
+              filter_result=""
+              ="suspicious"
+              %}selected{%
+              endif
+              %}
+            >
+              Suspicious
+            </option>
+            <option
+              value="fraudulent"
+              {%
+              if
+              filter_result=""
+              ="fraudulent"
+              %}selected{%
+              endif
+              %}
+            >
+              Fraudulent
+            </option>
+          </select>
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+          <button type="submit" class="btn btn-outline-primary">
+            <i class="bi bi-filter me-2"></i>Apply Filter
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Results Table -->
+  <div class="card">
+    <div class="card-body">
+      {% if certificates %}
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Filename</th>
+              <th>Upload Date</th>
+              <th>Status</th>
+              <th>Fraud Score</th>
+              <th>Result</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for cert in certificates %}
+            <tr>
+              <td>
+                <i class="bi bi-file-earmark me-2"></i>
+                {{ cert.original_filename }}
+              </td>
+              <td>{{ cert.uploaded_at|date:"M d, Y H:i" }}</td>
+              <td>
+                <span class="badge bg-{{ cert.get_status_display_class }}">
+                  {{ cert.get_status_display }}
+                </span>
+              </td>
+              <td>
+                {% if cert.status == 'completed' %}
+                <strong>{{ cert.final_fraud_score }}%</strong>
+                {% else %} - {% endif %}
+              </td>
+              <td>
+                {% if cert.status == 'completed' %}
+                <span class="badge bg-{{ cert.get_result_display_class }}">
+                  {{ cert.get_result_display }}
+                </span>
+                {% else %} - {% endif %}
+              </td>
+              <td>
+                <div class="btn-group" role="group">
+                  {% if cert.status == 'completed' %}
+                  <a
+                    href="{% url 'result_detail' cert.id %}"
+                    class="btn btn-sm btn-outline-primary"
+                  >
+                    <i class="bi bi-eye"></i>
+                  </a>
+                  <a
+                    href="{% url 'download_pdf' cert.id %}"
+                    class="btn btn-sm btn-outline-secondary"
+                    title="Download PDF"
+                  >
+                    <i class="bi bi-file-earmark-pdf"></i>
+                  </a>
+                  {% endif %}
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-danger"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteModal{{ cert.id }}"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+
+                <!-- Delete Modal -->
+                <div
+                  class="modal fade"
+                  id="deleteModal{{ cert.id }}"
+                  tabindex="-1"
+                >
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Confirm Delete</h5>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                        ></button>
+                      </div>
+                      <div class="modal-body">
+                        <p>
+                          Are you sure you want to delete "{{
+                          cert.original_filename }}"?
+                        </p>
+                        <p class="text-muted">This action cannot be undone.</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-dismiss="modal"
+                        >
+                          Cancel
+                        </button>
+                        <form
+                          method="post"
+                          action="{% url 'delete_certificate' cert.id %}"
+                        >
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn-danger">
+                            Delete
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="text-center py-5">
+        <i class="bi bi-inbox" style="font-size: 3rem; color: #ccc"></i>
+        <p class="mt-3 text-muted">No certificates found.</p>
+        <a href="{% url 'upload' %}" class="btn btn-primary">
+          <i class="bi bi-upload me-2"></i>Upload Your First Certificate
+        </a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

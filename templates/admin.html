@@ -1,0 +1,183 @@
+{% extends "base.html" %} {% block title %}Admin Dashboard - Certificate Fraud
+Detection{% endblock %} {% block content %}
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="mb-4">
+        <i class="fas fa-cog me-2"></i>
+        Admin Dashboard
+      </h1>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <i
+            class="fas fa-file-alt analysis-icon"
+            style="color: var(--secondary-color)"
+          ></i>
+          <h3>{{ stats.total }}</h3>
+          <p class="text-muted mb-0">Total Certificates</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <i
+            class="fas fa-exclamation-triangle analysis-icon"
+            style="color: var(--accent-color)"
+          ></i>
+          <h3>{{ stats.suspicious }}</h3>
+          <p class="text-muted mb-0">Suspicious Certificates</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <i
+            class="fas fa-chart-line analysis-icon"
+            style="color: var(--warning-color)"
+          ></i>
+          <h3>{{ stats.avg_score }}%</h3>
+          <p class="text-muted mb-0">Average Fraud Score</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Buttons -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="btn-group" role="group">
+        <a
+          href="{{ url_for('admin_dashboard', filter='all') }}"
+          class="btn {% if filter_type == 'all' %}btn-primary{% else %}btn-outline-primary{% endif %}"
+        >
+          All Certificates
+        </a>
+        <a
+          href="{{ url_for('admin_dashboard', filter='suspicious') }}"
+          class="btn {% if filter_type == 'suspicious' %}btn-danger{% else %}btn-outline-danger{% endif %}"
+        >
+          Suspicious Only
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Certificates Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0"><i class="fas fa-list me-2"></i>All Certificates</h5>
+        </div>
+        <div class="card-body">
+          {% if certificates %}
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>User</th>
+                  <th>Filename</th>
+                  <th>Date</th>
+                  <th>Text Score</th>
+                  <th>Sig Score</th>
+                  <th>Logo Score</th>
+                  <th>Stamp Score</th>
+                  <th>Overall</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for cert in certificates %}
+                <tr>
+                  <td>{{ cert.id }}</td>
+                  <td>{{ cert.user.username }}</td>
+                  <td>{{ cert.filename }}</td>
+                  <td>{{ cert.created_at.strftime('%Y-%m-%d') }}</td>
+                  <td>
+                    <span
+                      class="badge {% if cert.text_fraud_score > 50 %}bg-danger{% elif cert.text_fraud_score > 25 %}bg-warning{% else %}bg-success{% endif %}"
+                    >
+                      {{ "%.0f"|format(cert.text_fraud_score) }}
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      class="badge {% if cert.signature_fraud_score > 50 %}bg-danger{% elif cert.signature_fraud_score > 25 %}bg-warning{% else %}bg-success{% endif %}"
+                    >
+                      {{ "%.0f"|format(cert.signature_fraud_score) }}
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      class="badge {% if cert.logo_fraud_score > 50 %}bg-danger{% elif cert.logo_fraud_score > 25 %}bg-warning{% else %}bg-success{% endif %}"
+                    >
+                      {{ "%.0f"|format(cert.logo_fraud_score) }}
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      class="badge {% if cert.stamp_fraud_score > 50 %}bg-danger{% elif cert.stamp_fraud_score > 25 %}bg-warning{% else %}bg-success{% endif %}"
+                    >
+                      {{ "%.0f"|format(cert.stamp_fraud_score) }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge bg-primary"
+                      >{{ "%.1f"|format(cert.overall_fraud_score) }}</span
+                    >
+                  </td>
+                  <td>
+                    {% if cert.is_suspicious %}
+                    <span class="badge bg-danger">Suspicious</span>
+                    {% else %}
+                    <span class="badge bg-success">Genuine</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <a
+                      href="{{ url_for('result', certificate_id=cert.id) }}"
+                      class="btn btn-sm btn-info"
+                    >
+                      <i class="fas fa-eye"></i>
+                    </a>
+                    <a
+                      href="{{ url_for('toggle_suspicious', certificate_id=cert.id) }}"
+                      class="btn btn-sm btn-warning"
+                    >
+                      <i class="fas fa-toggle-on"></i>
+                    </a>
+                    <a
+                      href="{{ url_for('delete_certificate', certificate_id=cert.id) }}"
+                      class="btn btn-sm btn-danger"
+                      onclick="return confirm('Are you sure?');"
+                    >
+                      <i class="fas fa-trash"></i>
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% else %}
+          <div class="text-center py-5">
+            <i class="fas fa-inbox" style="font-size: 4rem; color: #ccc"></i>
+            <h3 class="mt-3 text-muted">No Certificates Found</h3>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

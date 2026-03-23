@@ -1,0 +1,208 @@
+{% extends 'base.html' %} {% block title %}Upload Certificate - Certificate
+Fraud Detection{% endblock %} {% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="mb-0">
+            <i class="bi bi-upload me-2"></i>Upload Certificate for Analysis
+          </h4>
+        </div>
+        <div class="card-body">
+          <form method="post" enctype="multipart/form-data" id="uploadForm">
+            {% csrf_token %}
+
+            <div class="upload-area mb-4" id="dropZone">
+              <i
+                class="bi bi-cloud-upload"
+                style="font-size: 4rem; color: var(--secondary-color)"
+              ></i>
+              <h5 class="mt-3">Drag and drop your certificate here</h5>
+              <p class="text-muted">or click to browse</p>
+              <input
+                type="file"
+                name="certificate_file"
+                id="certificate_file"
+                class="form-control"
+                accept=".pdf,.jpg,.jpeg,.png"
+                hidden
+              />
+            </div>
+
+            <div
+              id="filePreview"
+              class="alert alert-info"
+              style="display: none"
+            >
+              <i class="bi bi-file-earmark me-2"></i>
+              <span id="fileName"></span>
+              <button
+                type="button"
+                class="btn-close float-end"
+                id="clearFile"
+              ></button>
+            </div>
+
+            <div class="mb-4">
+              <h6>Supported File Types:</h6>
+              <div class="d-flex gap-2">
+                <span class="badge bg-secondary"
+                  ><i class="bi bi-file-earmark-pdf me-1"></i>PDF</span
+                >
+                <span class="badge bg-secondary"
+                  ><i class="bi bi-file-earmark-image me-1"></i>JPG</span
+                >
+                <span class="badge bg-secondary"
+                  ><i class="bi bi-file-earmark-image me-1"></i>PNG</span
+                >
+              </div>
+              <small class="text-muted">Maximum file size: 5MB</small>
+            </div>
+
+            <div class="d-grid">
+              <button
+                type="submit"
+                class="btn btn-primary btn-lg"
+                id="submitBtn"
+              >
+                <i class="bi bi-search me-2"></i>Analyze Certificate
+              </button>
+            </div>
+          </form>
+
+          <!-- Progress (hidden by default) -->
+          <div class="progress-container mt-4" id="progressContainer">
+            <div class="alert alert-info">
+              <div class="d-flex align-items-center">
+                <div
+                  class="spinner-border spinner-border-sm me-3"
+                  role="status"
+                >
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <div>
+                  <strong>Analyzing Certificate...</strong>
+                  <p class="mb-0 text-muted">This may take a few moments</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-4">
+        <div class="card-body">
+          <h6><i class="bi bi-info-circle me-2"></i>Analysis Includes:</h6>
+          <div class="row mt-3">
+            <div class="col-md-6">
+              <ul class="list-unstyled">
+                <li class="mb-2">
+                  <i class="bi bi-check-circle text-success me-2"></i>
+                  Text fraud detection (BERT)
+                </li>
+                <li class="mb-2">
+                  <i class="bi bi-check-circle text-success me-2"></i>
+                  Signature verification (SSIM)
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul class="list-unstyled">
+                <li class="mb-2">
+                  <i class="bi bi-check-circle text-success me-2"></i>
+                  Logo detection (OpenCV)
+                </li>
+                <li class="mb-2">
+                  <i class="bi bi-check-circle text-success me-2"></i>
+                  Digital stamp verification
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block extra_js %}
+<script>
+  const dropZone = document.getElementById("dropZone");
+  const fileInput = document.getElementById("certificate_file");
+  const filePreview = document.getElementById("filePreview");
+  const fileName = document.getElementById("fileName");
+  const clearFile = document.getElementById("clearFile");
+  const uploadForm = document.getElementById("uploadForm");
+  const submitBtn = document.getElementById("submitBtn");
+  const progressContainer = document.getElementById("progressContainer");
+
+  // Click to browse
+  dropZone.addEventListener("click", () => fileInput.click());
+
+  // File selected
+  fileInput.addEventListener("change", (e) => {
+    if (e.target.files.length > 0) {
+      showFilePreview(e.target.files[0]);
+    }
+  });
+
+  // Drag and drop
+  dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.classList.add("dragover");
+  });
+
+  dropZone.addEventListener("dragleave", () => {
+    dropZone.classList.remove("dragover");
+  });
+
+  dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.classList.remove("dragover");
+
+    if (e.dataTransfer.files.length > 0) {
+      fileInput.files = e.dataTransfer.files;
+      showFilePreview(e.dataTransfer.files[0]);
+    }
+  });
+
+  // Show file preview
+  function showFilePreview(file) {
+    const validTypes = [".pdf", ".jpg", ".jpeg", ".png"];
+    const ext = file.name.substring(file.name.lastIndexOf(".")).toLowerCase();
+
+    if (!validTypes.includes(ext)) {
+      alert("Invalid file type. Please upload PDF, JPG, or PNG files.");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert("File size too large. Maximum allowed size is 5MB.");
+      return;
+    }
+
+    fileName.textContent = `${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+    filePreview.style.display = "block";
+  }
+
+  // Clear file
+  clearFile.addEventListener("click", () => {
+    fileInput.value = "";
+    filePreview.style.display = "none";
+  });
+
+  // Form submission
+  uploadForm.addEventListener("submit", (e) => {
+    if (fileInput.files.length === 0) {
+      e.preventDefault();
+      alert("Please select a file to upload.");
+      return;
+    }
+
+    submitBtn.disabled = true;
+    progressContainer.style.display = "block";
+    submitBtn.innerHTML =
+      '<span class="spinner-border spinner-border-sm me-2"></span>Analyzing...';
+  });
+</script>
+{% endblock %}

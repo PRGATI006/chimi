@@ -1,13 +1,60 @@
+=======
 venv/
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
-.Python
-env/
 uploads/
 .DS_Store
 .env
-.venv
-*.log
 
+=======
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+env/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+instance/
+
+# Environment
+.env
+.env.local
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Uploads (keep structure but ignore contents)
+static/uploads/*
+!static/uploads/.gitkeep
+
+# PDF reports
+fraud_report*.pdf
+
+# PyCharm
+.idea/
+
+# Virtual Environment specific
+venv/
+env/
+ENV/
+>>>>>>> 32594ad622ea972d0c48a0e320fbde11c9d7e3d0

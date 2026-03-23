@@ -1,0 +1,56 @@
+{
+  "genuine_certificates": [
+    {
+      "id": 1,
+      "text": "This is to certify that John Doe has successfully completed all requirements for the Bachelor of Science degree in Computer Science from State University on May 15, 2023. The degree was awarded based on satisfactory completion of 120 credit hours including all major requirements.",
+      "label": 0
+    },
+    {
+      "id": 2,
+      "text": "Certificate of Completion - This certifies that Jane Smith has completed the Advanced Python Programming course at Tech Training Institute. The course consisted of 40 hours of instruction and was completed on March 20, 2023 with a grade of A.",
+      "label": 0
+    },
+    {
+      "id": 3,
+      "text": "Official Degree Certificate - Bachelor of Engineering in Electrical Engineering awarded to Michael Johnson by National Engineering University. This degree was conferred on May 2023 after completion of all academic requirements.",
+      "label": 0
+    },
+    {
+      "id": 4,
+      "text": "Certificate of Achievement - This is to certify that Sarah Williams has demonstrated exceptional performance in the Marketing Fundamentals course at Business School. Completed December 2022.",
+      "label": 0
+    },
+    {
+      "id": 5,
+      "text": "Professional Certificate in Data Science - Awarded to David Brown for completing all requirements including machine learning, statistics, and data visualization modules at DataTech Institute.",
+      "label": 0
+    }
+  ],
+  "fraudulent_certificates": [
+    {
+      "id": 1,
+      "text": "Fake certificate - This document certifies that John Doe has purchased a degree from Diploma Mill Inc. This is not recognized by any educational authority or accreditation body.",
+      "label": 1
+    },
+    {
+      "id": 2,
+      "text": "Forged certificate - Bachelor degree purchased online from DegreeShop.com. This is not an authentic academic credential and is void.",
+      "label": 1
+    },
+    {
+      "id": 3,
+      "text": "Counterfeit certificate - WARNING: This certificate is fake and was issued by an unauthorized institution. The seal has been replicated and is not genuine.",
+      "label": 1
+    },
+    {
+      "id": 4,
+      "text": "This certificate is invalid and fake. Issued by a degree mill. Not valid for employment or academic progression. Document number altered.",
+      "label": 1
+    },
+    {
+      "id": 5,
+      "text": "WARNING: This document is fraudulent. Certificate number has been altered from original. The issuing organization is not accredited.",
+      "label": 1
+    }
+  ]
+}
