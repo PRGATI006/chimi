@@ -1,0 +1,97 @@
+/* Custom Styles for AI Career Guidance System */
+
+:root {
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+body {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1) !important;
+}
+
+.bg-gradient-primary {
+  background: var(--primary-gradient) !important;
+}
+
+.display-3 {
+  background: var(--success-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.btn-primary {
+  background: var(--primary-gradient);
+  border: none;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+}
+
+.form-control,
+.form-select {
+  border-radius: 15px;
+  border: 2px solid #e9ecef;
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.badge {
+  border-radius: 25px;
+}
+
+.alert {
+  border-radius: 15px;
+  border: none;
+}
+
+.list-group-item {
+  border-radius: 10px;
+  margin-bottom: 5px;
+  background: #f8f9fa;
+}
+
+.bi {
+  font-size: 1.5rem;
+}
+
+.display-1 {
+  font-size: 4rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .display-4 {
+    font-size: 2.5rem !important;
+  }
+  .display-3 {
+    font-size: 2.5rem !important;
+  }
+  .display-1 {
+    font-size: 3rem !important;
+  }
+}

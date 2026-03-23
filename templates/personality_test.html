@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Personality Test - AI Career</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="card shadow-lg">
+            <div class="card-header bg-gradient-primary text-white text-center">
+              <h2><i class="bi bi-brain"></i> Skill-Based Personality Test</h2>
+              <p class="mb-0">
+                Questions personalized for your skills & domain
+              </p>
+            </div>
+            <div class="card-body p-5">
+              <!-- Dynamic Skills Context -->
+              <div class="alert alert-info mb-4">
+                <strong>Your Context:</strong> Skills: {{ skills or 'Not set' }}
+                | Domain: {{ domain or 'General' }}
+              </div>
+
+              <form id="personalityForm">
+                <div id="questions-container">
+                  <!-- Questions loaded via JS -->
+                </div>
+                <div class="text-center mt-5">
+                  <button type="submit" class="btn btn-success btn-lg px-5">
+                    <i class="bi bi-check-circle"></i> Get Career Match
+                  </button>
+                </div>
+              </form>
+
+              <div id="result" class="mt-5" style="display: none">
+                <div class="alert alert-success">
+                  <h4><i class="bi bi-award"></i> Your Match:</h4>
+                  <div id="result-content"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+      // Dynamic skill-based questions
+      const skillQuestions = {
+          'python': [
+              "How do you prefer debugging Python code?",
+              "Options": ["Print statements", "Debugger tools", "Unit tests", "AI-assisted"]
+          ],
+          'default': [
+              "How do you approach learning new skills?",
+              "Options": ["Tutorials", "Practice projects", "Courses", "Mentorship"]
+          ]
+      };
+
+      // Load 10 dynamic questions
+      function loadPersonalityQuestions(skills, domain) {
+          const container = document.getElementById('questions-container');
+          const questions = [];
+          // Add skill-specific + general
+          questions.push({
+              text: `In ${domain} domain, how analytical are you?`,
+              options: ['Low', 'Medium', 'High', 'Very High']
+          });
+          // Add 9 more dynamic based on skills/domain...
+          for (let i = 2; i <= 10; i++) {
+              questions.push({
+                  text: `Q${i}: Rate your ${domain} project experience (1-${i*10})`,
+                  options: ['1', '2', '3', '4']
+              });
+          }
+
+          questions.forEach((q, index) => {
+              const qDiv = document.createElement('div');
+              qDiv.className = 'mb-4 p-3 border rounded';
+              qDiv.innerHTML = `
+                  <h6>Q${index+1}: ${q.text}</h6>
+                  ${q.options.map((opt, i) => `
+                      <div class="form-check">
+                          <input class="form-check-input" type="radio" name="q${index+1}" value="${i}" id="q${index+1}_${i}" required>
+                          <label class="form-check-label" for="q${index+1}_${i}">${opt}</label>
+                      </div>
+                  `).join('')}
+              `;
+              container.appendChild(qDiv);
+          });
+      }
+
+      // Init
+      document.addEventListener('DOMContentLoaded', () => {
+          loadPersonalityQuestions('{{ skills or "" }}', '{{ domain or "tech" }}');
+
+          document.getElementById('personalityForm').addEventListener('submit', (e) => {
+              e.preventDefault();
+              const formData = new FormData(e.target);
+              const answers = Array.from(formData.entries()).map(([key, val]) => val);
+
+              fetch('/personality', {
+                  method: 'POST',
+                  headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify({answers: answers, skills: '{{ skills or "" }}', domain: '{{ domain or "tech" }}'})
+              })
+              .then(r => r.json())
+              .then(data => {
+                  document.getElementById('result').style.display = 'block';
+                  document.getElementById('result-content').innerHTML = `
+                      <h4>${data.career} (Score: ${data.score})</h4>
+                      <p>Perfect fit for your ${'{{ domain }}'} skills!</p>
+                  `;
+              });
+          });
+      });
+    </script>
+  </body>
+</html>
